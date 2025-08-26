@@ -5,24 +5,47 @@ import HeroWrapper from './components/Hero';
 import FboAnimation from './components/FboAnimation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
+import About from './components/About';
 import Loading from './components/Loading';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [startAnimations, setStartAnimations] = useState(false);
 
+  const [isScrollingEnabled, setIsScrollingEnabled] = useState(false);
+
   useEffect(() => {
+    // Ensure the page starts at the top on reload and disable scrolling initially
+    window.scrollTo(0, 0);
+    document.body.style.overflow = 'hidden';
+
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
       // Set a timer to start animations after the loading screen's exit transition
       const animationTimer = setTimeout(() => {
         setStartAnimations(true);
+        // The hero animation has a 0.2s delay and 1.2s duration.
+        // We'll enable scrolling after it has completed.
+        const scrollTimer = setTimeout(() => {
+          setIsScrollingEnabled(true);
+        }, 1400); // 200ms delay + 1200ms duration
+        return () => clearTimeout(scrollTimer);
       }, 500); // This duration should match the exit transition of the Loading component
       return () => clearTimeout(animationTimer);
     }, 1500); // How long the loading screen is visible
 
-    return () => clearTimeout(loadingTimer);
+    return () => {
+      clearTimeout(loadingTimer);
+      document.body.style.overflow = 'auto'; // Cleanup on unmount
+    };
   }, []);
+
+  // Enable scrolling when the state is updated
+  useEffect(() => {
+    if (isScrollingEnabled) {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isScrollingEnabled]);
 
   return (
     <div className="bg-secondary">
@@ -84,10 +107,7 @@ function App() {
         {/* Layer 30: Header */}
         <Header startAnimations={startAnimations} />
       </main>
-      <div className="h-screen bg-secondary p-10">
-        <h2 className="text-4xl font-bold text-accent">Scrollable Content</h2>
-        <p className="text-tertiary mt-4">This is where the rest of your page content will go.</p>
-      </div>
+      <About />
     </div>
   );
 }
