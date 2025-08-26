@@ -101,11 +101,11 @@ function App() {
                   sequence={['JOSHUA', 12, 'JOSHUA\nLIN']}
                   wrapper="h1"
                   speed={32}
-                  className="text-6xl md:text-9xl text-white uppercase whitespace-pre-line font-serif font-bold text-left"
+                  className="text-5xl md:text-9xl text-white uppercase whitespace-pre-line font-serif font-bold text-left"
                   cursor={false}
                 />
               ) : (
-                <h1 className="text-6xl md:text-9xl text-transparent uppercase whitespace-pre-line font-serif font-bold text-left">
+                <h1 className="text-5xl md:text-9xl text-transparent uppercase whitespace-pre-line font-serif font-bold text-left">
                   {'JOSHUA\nLIN'}
                 </h1>
               )}
