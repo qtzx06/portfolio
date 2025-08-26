@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import './App.css';
 import Header from './components/Header';
 import HeroWrapper from './components/Hero';
@@ -25,8 +25,18 @@ function App() {
   const filter = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
+    return () => {
+      window.removeEventListener('beforeunload', () => window.scrollTo(0, 0));
+    };
+  }, []);
+
+  useEffect(() => {
     document.body.style.overflow = 'hidden';
 
     const loadingTimer = setTimeout(() => {
