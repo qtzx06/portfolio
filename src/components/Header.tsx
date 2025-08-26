@@ -16,7 +16,7 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
     const targetId = href.substring(1);
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth' });
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
