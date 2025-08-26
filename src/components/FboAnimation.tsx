@@ -10,6 +10,24 @@ import fragmentShader from "../animations/fbo/fragmentShader";
 
 extend({ SimulationMaterial: SimulationMaterial });
 
+// This component creates a group that rotates to follow the mouse
+const RotatingScene = ({ children }) => {
+  const groupRef = useRef();
+
+  useFrame((state) => {
+    const { pointer } = state;
+    // Rotate the group based on mouse position
+    const targetRotationX = pointer.y * 1.69;
+    const targetRotationY = -pointer.x * 1.69;
+    if (groupRef.current) {
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.05);
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.05);
+    }
+  });
+
+  return <group ref={groupRef}>{children}</group>;
+};
+
 const FBOParticles = () => {
   const size = 138;
 
@@ -65,16 +83,22 @@ const FBOParticles = () => {
     const { gl, clock, pointer } = state;
 
     // Update mouse uniform
-    simulationMaterialRef.current.uniforms.uMouse.value.lerp(pointer, 0.1);
+    if (simulationMaterialRef.current) {
+      simulationMaterialRef.current.uniforms.uMouse.value.lerp(pointer, 0.1);
+    }
 
     gl.setRenderTarget(renderTarget);
     gl.clear();
     gl.render(scene, camera);
     gl.setRenderTarget(null);
 
-    points.current.material.uniforms.uPositions.value = renderTarget.texture;
+    if (points.current) {
+      points.current.material.uniforms.uPositions.value = renderTarget.texture;
+    }
 
-    simulationMaterialRef.current.uniforms.uTime.value = clock.elapsedTime;
+    if (simulationMaterialRef.current) {
+      simulationMaterialRef.current.uniforms.uTime.value = clock.elapsedTime;
+    }
   });
 
   return (
@@ -123,12 +147,14 @@ const FBOParticles = () => {
 const FboAnimation = () => {
   return (
     <Canvas
-      camera={{ position: [0, 0, 1.0] }}
+      camera={{ position: [0, 0, 1.4] }}
       style={{ background: "black", width: "100vw", height: "100vh" }}
       dpr={[1, 2]} // Set device pixel ratio to a max of 2 for performance
     >
       <ambientLight intensity={0.5} />
-      <FBOParticles />
+      <RotatingScene>
+        <FBOParticles />
+      </RotatingScene>
       <OrbitControls enableZoom={false} enablePan={false} />
     </Canvas>
   );
