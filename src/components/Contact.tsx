@@ -1,7 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { TypeAnimation } from 'react-type-animation';
-import { FaEnvelope, FaLinkedin, FaGithub, FaInstagram, FaTwitter, FaReddit, FaTiktok, FaYoutube } from 'react-icons/fa';
+import { FaEnvelope, FaLinkedin, FaGithub, FaInstagram, FaTwitter, FaReddit, FaYoutube } from 'react-icons/fa';
 
 const Contact = () => {
   const ref = useRef(null);
@@ -42,14 +42,14 @@ const Contact = () => {
         <div className="h-12 md:h-16 mb-8">
           {startTyping ? (
             <TypeAnimation
-              sequence={['Connect with me!']}
+              sequence={['Connect with me...']}
               wrapper="h2"
               cursor={true}
               className="text-4xl md:text-5xl font-bold text-primary font-serif"
             />
           ) : (
             <h2 className="text-4xl md:text-5xl font-bold text-primary font-serif text-transparent">
-              Connect with me!
+              Connect with me...
             </h2>
           )}
         </div>
@@ -60,28 +60,25 @@ const Contact = () => {
           className="flex items-center justify-center flex-wrap gap-x-8 gap-y-6"
           variants={containerVariants}
         >
-          <motion.a href="mailto:joshua.lin@example.com" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
+          <motion.a href="mailto:joshualin3806@gmail.com" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaEnvelope size={32} />
           </motion.a>
-          <motion.a href="https://www.linkedin.com/in/joshua-lin-86b8a324a" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
+          <motion.a href="https://www.linkedin.com/in/joshua-lin-86b8a324a/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaLinkedin size={32} />
           </motion.a>
           <motion.a href="https://github.com/qtzx06" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaGithub size={32} />
           </motion.a>
-          <motion.a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
+          <motion.a href="https://www.instagram.com/joshualin06/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaInstagram size={32} />
           </motion.a>
-          <motion.a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
+          <motion.a href="https://x.com/qtzx06" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaTwitter size={32} />
           </motion.a>
-          <motion.a href="https://www.reddit.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
+          <motion.a href="https://www.reddit.com/user/qtzx06/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaReddit size={32} />
           </motion.a>
-          <motion.a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
-            <FaTiktok size={32} />
-          </motion.a>
-          <motion.a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
+          <motion.a href="https://www.youtube.com/@qtzx06/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaYoutube size={32} />
           </motion.a>
         </motion.div>
