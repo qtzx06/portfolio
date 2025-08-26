@@ -5,15 +5,15 @@ const Portfolio = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
-  const filter = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], ["10%", "0%", "-10%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const filter = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(0px)", "blur(0px)", "blur(10px)"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
 
   return (
-    <div id="portfolio" ref={ref} className="relative h-screen w-screen bg-white flex items-center overflow-hidden">
+    <div id="portfolio" ref={ref} className="relative h-screen w-screen bg-white flex items-center">
       <motion.div
         className="w-full px-[10vw] text-center"
         style={{ scale, y, filter }}
