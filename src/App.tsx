@@ -1,59 +1,74 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Header from './components/Header';
 import HeroWrapper from './components/Hero';
 import FboAnimation from './components/FboAnimation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import About from './components/About';
 import Loading from './components/Loading';
+import Portfolio from './components/Portfolio';
+import Contact from './components/Contact';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [startAnimations, setStartAnimations] = useState(false);
-
   const [isScrollingEnabled, setIsScrollingEnabled] = useState(false);
 
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const filter = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+
   useEffect(() => {
-    // Ensure the page starts at the top on reload and disable scrolling initially
     window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
 
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
-      // Set a timer to start animations after the loading screen's exit transition
       const animationTimer = setTimeout(() => {
         setStartAnimations(true);
-        // The hero animation has a 0.2s delay and 1.2s duration.
-        // We'll enable scrolling after it has completed.
         const scrollTimer = setTimeout(() => {
           setIsScrollingEnabled(true);
-        }, 1400); // 200ms delay + 1200ms duration
+        }, 1400);
         return () => clearTimeout(scrollTimer);
-      }, 500); // This duration should match the exit transition of the Loading component
+      }, 500);
       return () => clearTimeout(animationTimer);
-    }, 1500); // How long the loading screen is visible
+    }, 1500);
 
     return () => {
       clearTimeout(loadingTimer);
-      document.body.style.overflow = 'auto'; // Cleanup on unmount
+      document.body.style.overflow = 'auto';
     };
   }, []);
 
-  // Enable scrolling when the state is updated
   useEffect(() => {
     if (isScrollingEnabled) {
       document.body.style.overflow = 'auto';
+    } else {
+      document.body.style.overflow = 'hidden';
     }
   }, [isScrollingEnabled]);
 
   return (
-    <div className="bg-secondary">
+    <div className="bg-white">
       <AnimatePresence>
         {isLoading && <Loading />}
       </AnimatePresence>
 
-      <main className="w-screen h-screen flex flex-col items-center justify-center overflow-hidden relative">
+      <Header startAnimations={startAnimations} />
+
+      <motion.main
+        id="home"
+        ref={heroRef}
+        className="w-screen h-screen relative"
+        style={{ scale, y }}
+      >
         {/* Layer 0: FBO Animation */}
         <div className="absolute inset-0 z-0">
           <FboAnimation />
@@ -64,50 +79,46 @@ function App() {
           <HeroWrapper startAnimations={startAnimations} />
         </div>
 
-        {/* Layer 20: Centered Title Block */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+        {/* Layer 20: Centered Title Block (Blurs on scroll) */}
+        <motion.div
+          className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
+          style={{ filter }}
+        >
           <div>
             {startAnimations ? (
               <TypeAnimation
-                sequence={[
-                  'JOSHUA',
-                  100,
-                  'JOSHUA\nLIN',
-                ]}
+                sequence={['JOSHUA', 12, 'JOSHUA\nLIN']}
                 wrapper="h1"
-                speed={10}
-                className="text-6xl md:text-9xl text-white uppercase whitespace-pre-line font-serif font-bold text-center md:text-left"
+                speed={32}
+                className="text-6xl md:text-9xl text-white uppercase whitespace-pre-line font-serif font-bold text-left"
                 cursor={false}
               />
             ) : (
-              <h1 className="text-6xl md:text-9xl text-transparent uppercase whitespace-pre-line font-serif font-bold text-center md:text-left">
+              <h1 className="text-6xl md:text-9xl text-transparent uppercase whitespace-pre-line font-serif font-bold text-left">
                 {'JOSHUA\nLIN'}
               </h1>
             )}
             <motion.p
-              className="text-lg md:text-2xl text-white tracking-[0.2em] uppercase font-sans mt-4 text-center md:text-left"
+              className="text-lg md:text-2xl text-white tracking-[0.2em] uppercase font-sans mt-4 text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={startAnimations ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
+              transition={{ duration: 1, ease: 'easeOut', delay: 0.7 }}
             >
               Portfolio Website
             </motion.p>
-            <motion.div
-              className="mt-4 text-sm md:text-lg text-white flex items-center justify-center md:justify-start space-x-4 font-serif"
-            >
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.7 }}>Developer</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.9 }} className="text-xs">&middot;</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.1 }}>Designer</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.3 }} className="text-xs">&middot;</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.5 }}>Researcher</motion.span>
+            <motion.div className="mt-4 text-sm md:text-lg text-white flex items-center justify-start space-x-4 font-serif">
+              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.9 }}>Developer</motion.span>
+              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.1 }} className="text-xs">&middot;</motion.span>
+              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.3 }}>Designer</motion.span>
+              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.5 }} className="text-xs">&middot;</motion.span>
+              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.7 }}>Researcher</motion.span>
             </motion.div>
           </div>
-        </div>
-        
-        {/* Layer 30: Header */}
-        <Header startAnimations={startAnimations} />
-      </main>
+        </motion.div>
+      </motion.main>
       <About />
+      <Portfolio />
+      <Contact />
     </div>
   );
 }
