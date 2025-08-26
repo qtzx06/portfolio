@@ -9,7 +9,7 @@ const About = () => {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
 
   const inView = useInView(ref, { margin: "-40% 0px -40% 0px" });
@@ -20,9 +20,9 @@ const About = () => {
     }
   }, [inView]);
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
-  const filter = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], ["10%", "0%", "-10%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const filter = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(0px)", "blur(0px)", "blur(10px)"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
 
   const textContainerVariants = {
     hidden: { opacity: 0 },
@@ -52,7 +52,7 @@ const About = () => {
   };
 
   return (
-    <div id="about" ref={ref} className="relative min-h-screen w-screen bg-white flex items-center py-20 md:py-0 overflow-hidden">
+    <div id="about" ref={ref} className="relative h-screen w-screen bg-white flex items-start md:items-center py-20 md:py-0">
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full px-8 md:px-[10vw]"
         style={{ scale, y, filter }}
@@ -79,31 +79,25 @@ const About = () => {
             )}
           </div>
           <motion.p variants={textItemVariants} className="text-tertiary text-lg mb-6">
-            I'm Joshua, a <strong>Data Science</strong> and  
-            <strong> Mathematics/Computer Science </strong> 
-            student at <strong>UC San Diego</strong> with a 
-            deep passion for building <strong>intelligent systems</strong>, 
-            crafting <strong>data-driven solutions</strong>,
-            and exploring the intersection of <strong>technology and creativity.</strong>
+            I'm Joshua, a <strong>Data Science</strong> and <strong>Mathematics/Computer Science</strong> student at <strong>UC San Diego</strong> with a passion for building <strong>intelligent systems</strong> and exploring where <strong>technology meets creativity</strong>.
           </motion.p>
-          <motion.p variants={textItemVariants} className="text-tertiary text-lg mb-6">
-            My journey in tech is driven by a curiosity for <strong>artificial intelligence</strong> and <strong>machine learning</strong>. 
-            From developing algorithms for <strong>Large Language Models</strong> to building <strong>computer vision tools</strong> and <strong>agentic AI systems</strong>, 
-            I thrive on solving complex problems and bringing ideas to life through code and critical thiking. 
-            My experience as an <strong>AI Research Fellow</strong> and <strong>Full-Stack Developer</strong> has allowed me to work on cutting-edge projects, 
-            and I'm always tinkering with my self-hosted <strong>home lab</strong> to learn more.
-          </motion.p>
-          <motion.p variants={textItemVariants} className="text-tertiary text-lg mb-6">
-            When I'm not in front of a screen, I believe in finding <strong>balance</strong>. 
-            You can often find me meticulously caring for my <strong>aquariums</strong>, 
-            enjoying the warm sound of my <strong>vinyl collection</strong>, or recharging at the <strong>beach</strong>. 
-            I’m also passionate about staying active and challenging myself—whether that’s 
-            experimenting in the <strong>kitchen</strong>, lifting at the <strong>gym</strong>, or learning something completely 
-            outside of tech to keep my perspective fresh.
-          </motion.p>
+          <motion.p variants={textItemVariants} className="text-tertiary text-lg mb-4">I...</motion.p>
+          <ul className="list-disc list-inside text-tertiary text-lg mb-6 space-y-4 ml-4">
+            <motion.li variants={textItemVariants}>
+              am fueled by curiosity for <strong>artificial intelligence</strong> and <strong>machine learning</strong>,
+            </motion.li>
+            <motion.li variants={textItemVariants}>
+              love solving <strong>complex problems</strong> through developing <strong>LLM algorithms</strong>, creating <strong>computer vision tools</strong>, building <strong>agentic AI systems</strong>, and more,
+            </motion.li>
+            <motion.li variants={textItemVariants}>
+              bring experience as an <strong>AI Research Fellow</strong> and <strong>Full-Stack Developer</strong> plus extensive work with my self-hosted <strong>home lab</strong>,
+            </motion.li>
+            <motion.li variants={textItemVariants}>
+              also find joy in tending to my <strong>aquariums</strong>, spinning my <strong>vinyl records</strong>, and unwinding at the <strong>beach</strong>.
+            </motion.li>
+          </ul>
           <motion.p variants={textItemVariants} className="text-tertiary text-lg">
-            I'm always excited to <strong>connect with others</strong> who share my interests, whether in tech or hobbies. 
-            Feel free to <strong>reach out!</strong>
+            I'm always excited to <strong>connect with others</strong> who share my interests, whether in tech or hobbies. Feel free to <strong>reach out!</strong>
           </motion.p>
         </motion.div>
 
