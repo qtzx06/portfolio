@@ -52,6 +52,13 @@ const About = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease } },
   };
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div id="about" ref={ref} className="relative min-h-screen md:h-screen w-screen bg-white">
       <motion.div
@@ -98,7 +105,10 @@ const About = () => {
             </motion.li>
           </ul>
           <motion.p variants={textItemVariants} className="text-tertiary text-lg">
-            I'm always excited to <strong>connect with others</strong> who share my interests, whether in tech or hobbies. Feel free to <strong>reach out!</strong>
+            I'm always excited to <strong>connect with others</strong> who share my interests, whether in tech or hobbies. Feel free to{' '}
+            <a onClick={() => scrollToSection('contact')} className="font-bold text-primary hover:underline cursor-pointer">
+              reach out!
+            </a>
           </motion.p>
         </motion.div>
 
