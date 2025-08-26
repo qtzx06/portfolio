@@ -61,8 +61,6 @@ const FBOParticles = () => {
     []
   );
 
-  const mouse = useRef(new THREE.Vector2());
-
   useFrame((state) => {
     const { gl, clock, pointer } = state;
 
