@@ -42,19 +42,19 @@ const Contact = () => {
         <div className="h-12 md:h-16 mb-8">
           {startTyping ? (
             <TypeAnimation
-              sequence={['Connect with me...']}
+              sequence={['Connect...']}
               wrapper="h2"
               cursor={true}
               className="text-4xl md:text-5xl font-bold text-primary font-serif"
             />
           ) : (
             <h2 className="text-4xl md:text-5xl font-bold text-primary font-serif text-transparent">
-              Connect with me...
+              Connect...
             </h2>
           )}
         </div>
         <p className="text-tertiary text-lg mb-12 max-w-2xl">
-          I love connecting with fellow builders, researchers, and <strong>curious minds</strong>. Whether you want to brainstorm a project or just geek out about tech, I'm always up for a good conversation.
+          I love connecting with fellow builders, researchers, and <strong>curious minds</strong>. Whether you want to brainstorm a project or just geek out about tech, I'm always up for a good conversation. Coffee chats, late-night coding sessions, or quick DMs, <strong>whatever works for you</strong>.
         </p>
         <motion.div 
           className="flex items-center justify-center flex-wrap gap-x-8 gap-y-6"
