@@ -9,7 +9,7 @@ const Portfolio = () => {
   });
 
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
-  const filter = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(10px)", "blur(0px)", "blur(10px)"]);
+  const filter = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
   const y = useTransform(scrollYProgress, [0, 0.5, 1], ["10%", "0%", "-10%"]);
 
   return (
