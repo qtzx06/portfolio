@@ -63,7 +63,7 @@ const Contact = () => {
           <motion.a href="mailto:joshualin3806@gmail.com" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaEnvelope size={32} />
           </motion.a>
-          <motion.a href="https://www.linkedin.com/in/joshua-lin-86b8a324a/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
+          <motion.a href="https://www.linkedin.com/in/qtzx06/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
             <FaLinkedin size={32} />
           </motion.a>
           <motion.a href="https://github.com/qtzx06" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-tertiary transition-colors duration-300" variants={iconVariants}>
