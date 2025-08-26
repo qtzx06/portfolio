@@ -1,1 +1,5 @@
-/* We will keep this file for any future custom CSS, but clear it for now. */
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}

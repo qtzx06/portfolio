@@ -73,62 +73,64 @@ function App() {
 
       <Header startAnimations={startAnimations} />
 
-      <motion.main
-        id="home"
-        ref={heroRef}
-        className="w-screen h-screen relative z-10"
-        style={{ scale, y }}
-      >
-        {/* Layer 0: FBO Animation */}
-        <div className="absolute inset-0 z-0">
-          <FboAnimation />
-        </div>
-
-        {/* Layer 10: Sliding Frame */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          <HeroWrapper startAnimations={startAnimations} />
-        </div>
-
-        {/* Layer 20: Centered Title Block (Blurs on scroll) */}
-        <motion.div
-          className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
-          style={{ filter }}
+      <div className="scroll-container">
+        <motion.main
+          id="home"
+          ref={heroRef}
+          className="w-screen h-screen relative z-10"
+          style={{ scale, y }}
         >
-          <div>
-            {startAnimations ? (
-              <TypeAnimation
-                sequence={['JOSHUA', 12, 'JOSHUA\nLIN']}
-                wrapper="h1"
-                speed={32}
-                className="text-6xl md:text-9xl text-white uppercase whitespace-pre-line font-serif font-bold text-left"
-                cursor={false}
-              />
-            ) : (
-              <h1 className="text-6xl md:text-9xl text-transparent uppercase whitespace-pre-line font-serif font-bold text-left">
-                {'JOSHUA\nLIN'}
-              </h1>
-            )}
-            <motion.p
-              className="text-lg md:text-2xl text-white tracking-[0.2em] uppercase font-sans mt-4 text-left"
-              initial={{ opacity: 0, y: 20 }}
-              animate={startAnimations ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, ease: 'easeOut', delay: 0.7 }}
-            >
-              Portfolio Website
-            </motion.p>
-            <motion.div className="mt-4 text-sm md:text-lg text-white flex items-center justify-start space-x-4 font-serif">
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.9 }}>Developer</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.1 }} className="text-xs">&middot;</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.3 }}>Designer</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.5 }} className="text-xs">&middot;</motion.span>
-              <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.7 }}>Researcher</motion.span>
-            </motion.div>
+          {/* Layer 0: FBO Animation */}
+          <div className="absolute inset-0 z-0">
+            <FboAnimation />
           </div>
-        </motion.div>
-      </motion.main>
-      <About />
-      <Portfolio />
-      <Contact />
+
+          {/* Layer 10: Sliding Frame */}
+          <div className="absolute inset-0 z-10 pointer-events-none">
+            <HeroWrapper startAnimations={startAnimations} />
+          </div>
+
+          {/* Layer 20: Centered Title Block (Blurs on scroll) */}
+          <motion.div
+            className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
+            style={{ filter }}
+          >
+            <div>
+              {startAnimations ? (
+                <TypeAnimation
+                  sequence={['JOSHUA', 12, 'JOSHUA\nLIN']}
+                  wrapper="h1"
+                  speed={32}
+                  className="text-6xl md:text-9xl text-white uppercase whitespace-pre-line font-serif font-bold text-left"
+                  cursor={false}
+                />
+              ) : (
+                <h1 className="text-6xl md:text-9xl text-transparent uppercase whitespace-pre-line font-serif font-bold text-left">
+                  {'JOSHUA\nLIN'}
+                </h1>
+              )}
+              <motion.p
+                className="text-lg md:text-2xl text-white tracking-[0.2em] uppercase font-sans mt-4 text-left"
+                initial={{ opacity: 0, y: 20 }}
+                animate={startAnimations ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.7 }}
+              >
+                Portfolio Website
+              </motion.p>
+              <motion.div className="mt-4 text-sm md:text-lg text-white flex items-center justify-start space-x-4 font-serif">
+                <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.9 }}>Developer</motion.span>
+                <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.1 }} className="text-xs">&middot;</motion.span>
+                <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.3 }}>Designer</motion.span>
+                <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.5 }} className="text-xs">&middot;</motion.span>
+                <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 1.7 }}>Researcher</motion.span>
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.main>
+        <About />
+        <Portfolio />
+        <Contact />
+      </div>
     </div>
   );
 }

@@ -166,7 +166,8 @@ const Portfolio = () => {
             A collection of my favorite projects, from <strong>hackathon-winning AI agents</strong> to finely-tuned <strong>custom development environments</strong>. Each one represents a challenge I was excited to tackle.
           </motion.p>
           <motion.a 
-            href="#" // Placeholder for resume link
+            href="/media/resume/JoshuaLinResumeMain.pdf"
+            download="JoshuaLinResume.pdf"
             variants={itemVariants}
             className="inline-block text-primary font-semibold px-6 py-3 rounded-full text-sm"
             style={{

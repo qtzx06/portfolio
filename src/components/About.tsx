@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import type { Easing } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { TypeAnimation } from 'react-type-animation';
@@ -6,24 +6,13 @@ import { TypeAnimation } from 'react-type-animation';
 const About = () => {
   const ref = useRef(null);
   const [startTyping, setStartTyping] = useState(false);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const inView = useInView(ref, { margin: "-40% 0px -40% 0px" });
+  const inView = useInView(ref, { once: true, margin: "-40% 0px -40% 0px" });
 
   useEffect(() => {
     if (inView) {
       setStartTyping(true);
     }
   }, [inView]);
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
-  const filter = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], ["blur(0px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
-  const zIndex = useTransform(scrollYProgress, (value) => (value > 0.1 && value < 0.9 ? 20 : 0));
 
   const textContainerVariants = {
     hidden: { opacity: 0 },
@@ -60,17 +49,16 @@ const About = () => {
   };
 
   return (
-    <div id="about" ref={ref} className="relative min-h-screen md:h-screen w-screen bg-white">
+    <div id="about" ref={ref} className="relative min-h-screen w-screen bg-white py-24 px-8 md:px-[10vw]">
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full h-full px-8 md:px-[10vw] items-start md:items-center py-24 md:py-0"
-        style={{ scale, y, filter, zIndex }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full h-full items-start md:items-center"
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        variants={textContainerVariants}
       >
         {/* Left Column: Text Content */}
         <motion.div 
           className="flex flex-col justify-center"
-          variants={textContainerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
         >
           <div className="h-12 md:h-16 mb-8">
             {startTyping ? (
@@ -116,8 +104,6 @@ const About = () => {
         <motion.div 
           className="flex items-center justify-center"
           variants={mediaContainerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
         >
             <div className="flex gap-4 w-full">
                 <motion.div variants={videoVariant} className="w-7/12 aspect-[9/16] rounded-lg overflow-hidden bg-gray-200">
