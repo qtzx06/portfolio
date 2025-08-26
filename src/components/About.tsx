@@ -77,7 +77,7 @@ const About = () => {
           <motion.p variants={textItemVariants} className="text-tertiary text-lg mb-6">
             I'm Joshua, a <strong>Data Science</strong> and <strong>Mathematics/Computer Science</strong> student at <strong>UC San Diego</strong> with a passion for building <strong>intelligent systems</strong> and exploring where <strong>technology meets creativity</strong>.
           </motion.p>
-          <motion.p variants={textItemVariants} className="text-tertiary text-lg mb-4">I...</motion.p>
+          <motion.p variants={textItemVariants} className="text-tertiary text-lg mb-4"><strong>I...</strong></motion.p>
           <ul className="list-disc list-inside text-tertiary text-lg mb-6 space-y-4 ml-4">
             <motion.li variants={textItemVariants}>
               am fueled by curiosity for <strong>artificial intelligence</strong> and <strong>machine learning</strong>,
