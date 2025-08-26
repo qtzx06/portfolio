@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
@@ -10,25 +10,15 @@ const navLinks = [
 
 const Header = ({ startAnimations }: { startAnimations: boolean }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('Home');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = navLinks.map(link => document.getElementById(link.href.substring(1)));
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      let currentSection = 'Home';
-      for (const section of sections) {
-        if (section && scrollPosition >= section.offsetTop) {
-          currentSection = section.id.charAt(0).toUpperCase() + section.id.slice(1);
-        }
-      }
-      setActiveSection(currentSection);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
@@ -54,7 +44,7 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
             <a 
               key={link.title}
               href={link.href} 
-              onClick={() => setActiveSection(link.title)}
+              onClick={(e) => handleNavClick(e, link.href)}
               className="text-primary transition-colors duration-300 px-4 py-2 relative z-10 rounded-full text-sm"
             >
               {link.title}
@@ -103,7 +93,10 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
                 <a 
                   key={link.title}
                   href={link.href} 
-                  onClick={closeMenu}
+                  onClick={(e) => {
+                    handleNavClick(e, link.href);
+                    closeMenu();
+                  }}
                   className="text-primary hover:text-black transition-colors duration-300 w-full text-center py-3 rounded-lg"
                 >
                   {link.title}
