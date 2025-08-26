@@ -13,7 +13,7 @@ const Loading = () => {
           className="h-full bg-white"
           initial={{ width: '0%' }}
           animate={{ width: '100%' }}
-          transition={{ duration: 2.4, ease: 'easeInOut' }}
+          transition={{ duration: 1.4, ease: 'easeInOut' }}
         />
       </div>
     </motion.div>

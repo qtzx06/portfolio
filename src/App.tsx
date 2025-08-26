@@ -19,7 +19,7 @@ function App() {
         setStartAnimations(true);
       }, 500); // This duration should match the exit transition of the Loading component
       return () => clearTimeout(animationTimer);
-    }, 2500); // How long the loading screen is visible
+    }, 1500); // How long the loading screen is visible
 
     return () => clearTimeout(loadingTimer);
   }, []);
