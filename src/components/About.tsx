@@ -21,8 +21,9 @@ const About = () => {
   }, [inView]);
 
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
-  const filter = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(0px)", "blur(0px)", "blur(10px)"]);
+  const filter = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], ["blur(0px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const zIndex = useTransform(scrollYProgress, (value) => (value > 0.1 && value < 0.9 ? 20 : 0));
 
   const textContainerVariants = {
     hidden: { opacity: 0 },
@@ -52,10 +53,10 @@ const About = () => {
   };
 
   return (
-    <div id="about" ref={ref} className="relative h-screen w-screen bg-white flex items-start md:items-center py-20 md:py-0">
+    <div id="about" ref={ref} className="relative min-h-screen md:h-screen w-screen bg-white">
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full px-8 md:px-[10vw]"
-        style={{ scale, y, filter }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full h-full px-8 md:px-[10vw] items-start md:items-center py-24 md:py-0"
+        style={{ scale, y, filter, zIndex }}
       >
         {/* Left Column: Text Content */}
         <motion.div 

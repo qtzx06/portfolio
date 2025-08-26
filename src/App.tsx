@@ -76,7 +76,7 @@ function App() {
       <motion.main
         id="home"
         ref={heroRef}
-        className="w-screen h-screen relative"
+        className="w-screen h-screen relative z-10"
         style={{ scale, y }}
       >
         {/* Layer 0: FBO Animation */}
