@@ -6,9 +6,16 @@ const Loading = () => {
       className="absolute inset-0 z-50 flex items-center justify-center bg-black"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
     >
-      {/* You can add a spinner or logo here if you want */}
+      <div className="w-1/4 h-0.5 bg-gray-700 rounded-full overflow-hidden">
+        <motion.div
+          className="h-full bg-white"
+          initial={{ width: '0%' }}
+          animate={{ width: '100%' }}
+          transition={{ duration: 2.4, ease: 'easeInOut' }}
+        />
+      </div>
     </motion.div>
   );
 };
