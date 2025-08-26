@@ -2,13 +2,13 @@ import { motion } from 'framer-motion';
 
 const navLinks = ["Home", "About", "Portfolio", "Contact"];
 
-const Header = () => {
+const Header = ({ startAnimations }: { startAnimations: boolean }) => {
   return (
     <motion.header
       className="fixed top-8 left-1/2 -translate-x-1/2 z-50"
       initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.0, ease: 'easeOut', delay: 1.8 }}
+      animate={startAnimations ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1.0, ease: 'easeOut', delay: 0.2 }}
     >
       <motion.div 
         className="relative group"

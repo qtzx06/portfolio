@@ -1,25 +1,50 @@
 import { motion } from 'framer-motion';
 
-const FramePanel = ({ initial, animate }: { initial: any; animate: any; }) => (
+const FramePanel = ({ variants, startAnimations }: { variants: any; startAnimations: boolean; }) => (
   <motion.div
     className="absolute"
-    style={{ backgroundColor: 'white' }} // Change color to white
-    initial={initial}
-    animate={animate}
-    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+    style={{ backgroundColor: 'white' }}
+    initial="hidden"
+    animate={startAnimations ? "visible" : "hidden"}
+    variants={variants}
+    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
   />
 );
 
-const Hero = () => {
+const Hero = ({ startAnimations }: { startAnimations: boolean }) => {
+  const topPanel = { hidden: { height: '0%' }, visible: { height: '15%' } };
+  const bottomPanel = { hidden: { height: '0%' }, visible: { height: '15%' } };
+  const leftPanel = { hidden: { width: '0%' }, visible: { width: '10%' } };
+  const rightPanel = { hidden: { width: '0%' }, visible: { width: '10%' } };
+
   return (
     <>
       {/* Panels slide IN from the outside to form the frame */}
-      <FramePanel initial={{ top: 0, left: 0, right: 0, height: '0%' }} animate={{ height: '15%' }} />
-      <FramePanel initial={{ bottom: 0, left: 0, right: 0, height: '0%' }} animate={{ height: '15%' }} />
-      <FramePanel initial={{ top: 0, bottom: 0, left: 0, width: '0%' }} animate={{ width: '10%' }} />
-      <FramePanel initial={{ top: 0, bottom: 0, right: 0, width: '0%' }} animate={{ width: '10%' }} />
+      <FramePanel startAnimations={startAnimations} variants={topPanel} />
+      <FramePanel startAnimations={startAnimations} variants={bottomPanel} />
+      <FramePanel startAnimations={startAnimations} variants={leftPanel} />
+      <FramePanel startAnimations={startAnimations} variants={rightPanel} />
     </>
   );
 };
 
-export default Hero;
+// This is a bit repetitive, but we need to apply the correct initial styles
+// for each panel since they are positioned differently.
+const HeroWrapper = ({ startAnimations }: { startAnimations: boolean }) => {
+  const topPanel = { hidden: { height: '0%' }, visible: { height: '15%' } };
+  const bottomPanel = { hidden: { height: '0%' }, visible: { height: '15%' } };
+  const leftPanel = { hidden: { width: '0%' }, visible: { width: '10%' } };
+  const rightPanel = { hidden: { width: '0%' }, visible: { width: '10%' } };
+
+  return (
+    <>
+      <motion.div className="absolute top-0 left-0 right-0" initial={{height: '0%'}} animate={startAnimations ? {height: '15%'} : {}} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }} style={{backgroundColor: 'white'}} />
+      <motion.div className="absolute bottom-0 left-0 right-0" initial={{height: '0%'}} animate={startAnimations ? {height: '15%'} : {}} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }} style={{backgroundColor: 'white'}} />
+      <motion.div className="absolute top-0 bottom-0 left-0" initial={{width: '0%'}} animate={startAnimations ? {width: '10%'} : {}} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }} style={{backgroundColor: 'white'}} />
+      <motion.div className="absolute top-0 bottom-0 right-0" initial={{width: '0%'}} animate={startAnimations ? {width: '10%'} : {}} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }} style={{backgroundColor: 'white'}} />
+    </>
+  );
+}
+
+
+export default HeroWrapper;
