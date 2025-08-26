@@ -1,12 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const navLinks = ["Home", "About", "Portfolio", "Contact"];
+const navLinks = [
+  { title: "Home", href: "#home" },
+  { title: "About", href: "#about" },
+  { title: "Portfolio", href: "#portfolio" },
+  { title: "Contact", href: "#contact" },
+];
 
 const Header = ({ startAnimations }: { startAnimations: boolean }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('Home');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navLinks.map(link => document.getElementById(link.href.substring(1)));
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      let currentSection = 'Home';
+      for (const section of sections) {
+        if (section && scrollPosition >= section.offsetTop) {
+          currentSection = section.id.charAt(0).toUpperCase() + section.id.slice(1);
+        }
+      }
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <motion.header
@@ -17,41 +42,25 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
     >
       {/* Desktop Menu */}
       <div className="hidden md:block">
-        <motion.div 
-          className="relative group"
-          whileHover={{ y: -4 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+        <nav 
+          className="relative flex items-center justify-center space-x-2 px-3 py-2 rounded-full"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.2), inset 0px 2px 1px rgba(255, 255, 255, 1), inset 0px -2px 1px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.05)'
+          }}
         >
-          <motion.div
-            className="absolute -inset-px bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-500"
-            style={{ borderRadius: '9999px' }}
-            animate={{ backgroundPositionX: ['-100%', '200%'] }}
-            transition={{
-              repeat: Infinity,
-              repeatType: 'loop',
-              duration: 3,
-              ease: 'linear',
-            }}
-          />
-          <nav 
-            className="relative flex items-center justify-center space-x-6 px-6 py-2 rounded-full"
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 1)',
-              boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.2), inset 0px 2px 1px rgba(255, 255, 255, 1), inset 0px -2px 1px rgba(0, 0, 0, 0.1)',
-              border: '1px solid rgba(0, 0, 0, 0.05)'
-            }}
-          >
-            {navLinks.map((link) => (
-              <a 
-                key={link}
-                href="#" 
-                className="text-primary hover:text-black transition-colors duration-300 px-6 py-2 relative z-10 rounded-full"
-              >
-                {link}
-              </a>
-            ))}
-          </nav>
-        </motion.div>
+          {navLinks.map((link) => (
+            <a 
+              key={link.title}
+              href={link.href} 
+              onClick={() => setActiveSection(link.title)}
+              className="text-primary transition-colors duration-300 px-4 py-2 relative z-10 rounded-full text-sm"
+            >
+              {link.title}
+            </a>
+          ))}
+        </nav>
       </div>
 
       {/* Mobile Menu Button */}
@@ -92,11 +101,12 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
             <nav className="flex flex-col items-center">
               {navLinks.map((link) => (
                 <a 
-                  key={link}
-                  href="#" 
+                  key={link.title}
+                  href={link.href} 
+                  onClick={closeMenu}
                   className="text-primary hover:text-black transition-colors duration-300 w-full text-center py-3 rounded-lg"
                 >
-                  {link}
+                  {link.title}
                 </a>
               ))}
             </nav>
