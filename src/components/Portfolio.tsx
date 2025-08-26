@@ -163,7 +163,7 @@ const Portfolio = () => {
             )}
           </div>
           <motion.p variants={itemVariants} className="text-tertiary text-lg mb-8 max-w-3xl mx-auto">
-            A collection of my favorite projects, from <strong>hackathon-winning AI agents</strong> to finely-tuned <strong>custom development environments</strong>. Each one represents a challenge I was excited to tackle.
+            A collection of my favorite projects, from <strong>hackathon-winning AI agents</strong> to finely-tuned <strong>custom development environments</strong>. These are the projects that kept me up at night—debugging edge cases at 2am, refactoring for the third time because I found a more elegant approach, and constantly thinking "<strong>what if I tried...</strong>"
           </motion.p>
           <motion.a 
             href="/media/resume/JoshuaLinResumeMain.pdf"
