@@ -1,4 +1,4 @@
-import glslCurlNoise from './glslCurlNoise';
+import glslCurlNoise from './glslCurlNoise.ts';
 
 const fragmentShader = `
 

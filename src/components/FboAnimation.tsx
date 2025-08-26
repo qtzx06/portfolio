@@ -1,6 +1,6 @@
 import { Canvas, useFrame, extend, createPortal } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, type ReactNode } from "react";
 import * as THREE from "three";
 
 import SimulationMaterial from "../animations/fbo/SimulationMaterial";
@@ -8,17 +8,18 @@ import SimulationMaterial from "../animations/fbo/SimulationMaterial";
 import vertexShader from "../animations/fbo/vertexShader";
 import fragmentShader from "../animations/fbo/fragmentShader";
 
-extend({ SimulationMaterial: SimulationMaterial });
+// Extend R3F to recognize SimulationMaterial
+extend({ SimulationMaterial });
 
 // This component creates a group that rotates to follow the mouse
-const RotatingScene = ({ children }) => {
-  const groupRef = useRef();
+const RotatingScene = ({ children }: { children: ReactNode }) => {
+  const groupRef = useRef<THREE.Group>(null!);
 
   useFrame((state) => {
     const { pointer } = state;
     // Rotate the group based on mouse position
-    const targetRotationX = pointer.y * 1.69;
-    const targetRotationY = -pointer.x * 1.69;
+    const targetRotationX = pointer.y * 1.2;
+    const targetRotationY = -pointer.x * 1.2;
     if (groupRef.current) {
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.05);
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.05);
@@ -31,32 +32,23 @@ const RotatingScene = ({ children }) => {
 const FBOParticles = () => {
   const size = 138;
 
-  const points = useRef();
-  const simulationMaterialRef = useRef();
+  const points = useRef<THREE.Points>(null!);
+  const simulationMaterialRef = useRef<SimulationMaterial>(null!);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(
-    -1,
-    1,
-    1,
-    -1,
-    1 / Math.pow(2, 53),
-    1
-  );
-  const positions = new Float32Array([
-    -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0,
-  ]);
-  const uvs = new Float32Array([0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0]);
+  const scene = useMemo(() => new THREE.Scene(), []);
+  const camera = useMemo(() => new THREE.OrthographicCamera(-1, 1, 1, -1, 1 / Math.pow(2, 53), 1), []);
+  
+  const positions = useMemo(() => new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0]), []);
+  const uvs = useMemo(() => new Float32Array([0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0]), []);
 
   const renderTarget = useMemo(() => {
-    const target = new THREE.WebGLRenderTarget(size, size, {
+    return new THREE.WebGLRenderTarget(size, size, {
       minFilter: THREE.NearestFilter,
       magFilter: THREE.NearestFilter,
       format: THREE.RGBAFormat,
       stencilBuffer: false,
       type: THREE.FloatType,
     });
-    return target;
   }, [size]);
 
   const particlesPosition = useMemo(() => {
@@ -82,9 +74,9 @@ const FBOParticles = () => {
   useFrame((state) => {
     const { gl, clock, pointer } = state;
 
-    // Update mouse uniform
     if (simulationMaterialRef.current) {
       simulationMaterialRef.current.uniforms.uMouse.value.lerp(pointer, 0.1);
+      simulationMaterialRef.current.uniforms.uTime.value = clock.elapsedTime;
     }
 
     gl.setRenderTarget(renderTarget);
@@ -93,11 +85,7 @@ const FBOParticles = () => {
     gl.setRenderTarget(null);
 
     if (points.current) {
-      points.current.material.uniforms.uPositions.value = renderTarget.texture;
-    }
-
-    if (simulationMaterialRef.current) {
-      simulationMaterialRef.current.uniforms.uTime.value = clock.elapsedTime;
+      (points.current.material as THREE.ShaderMaterial).uniforms.uPositions.value = renderTarget.texture;
     }
   });
 
@@ -105,19 +93,18 @@ const FBOParticles = () => {
     <>
       {createPortal(
         <mesh>
+          {/* @ts-ignore */}
           <simulationMaterial ref={simulationMaterialRef} args={[size]} />
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
+              args={[positions, 3]}
               count={positions.length / 3}
-              array={positions}
-              itemSize={3}
             />
             <bufferAttribute
               attach="attributes-uv"
+              args={[uvs, 2]}
               count={uvs.length / 2}
-              array={uvs}
-              itemSize={2}
             />
           </bufferGeometry>
         </mesh>,
@@ -127,9 +114,8 @@ const FBOParticles = () => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[particlesPosition, 3]}
             count={particlesPosition.length / 3}
-            array={particlesPosition}
-            itemSize={3}
           />
         </bufferGeometry>
         <shaderMaterial

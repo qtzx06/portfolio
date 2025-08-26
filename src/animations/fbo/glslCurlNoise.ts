@@ -1,7 +1,7 @@
 // Source: https://github.com/drcmda/glsl-curl-noise2
 // and: https://github.com/guoweish/glsl-noise-simplex/blob/master/3d.glsl
 
-const glslCurlNoise = `
+const glslCurlNoise: string = `
 
 //
 // Description : Array and textureless GLSL 2D/3D/4D simplex
