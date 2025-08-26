@@ -1,44 +1,29 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 
 const Contact = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const filter = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(10px)", "blur(0px)", "blur(10px)"]);
+  const y = useTransform(scrollYProgress, [0, 0.5, 1], ["10%", "0%", "-10%"]);
 
   return (
-    <div id="contact" className="relative min-h-screen w-screen bg-white flex items-center justify-center py-20">
+    <div id="contact" ref={ref} className="relative h-screen w-screen bg-white flex items-center overflow-hidden">
       <motion.div
-        className="text-center"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={containerVariants}
+        className="w-full px-[10vw] text-center"
+        style={{ scale, y, filter }}
       >
-        <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold text-primary mb-4 font-serif">
+        <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4 font-serif">
           Contact
-        </motion.h2>
-        <motion.p variants={itemVariants} className="text-tertiary text-lg">
+        </h2>
+        <p className="text-tertiary text-lg">
           This is where the contact information will go.
-        </motion.p>
+        </p>
       </motion.div>
     </div>
   );
