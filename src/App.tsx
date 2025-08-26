@@ -62,7 +62,7 @@ function App() {
               </h1>
             )}
             <motion.p
-              className="text-lg md:text-2xl text-white tracking-[0.2em] uppercase font-sans mt-4 text-center"
+              className="text-lg md:text-2xl text-white tracking-[0.2em] uppercase font-sans mt-4 text-center md:text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={startAnimations ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
@@ -70,7 +70,7 @@ function App() {
               Portfolio Website
             </motion.p>
             <motion.div
-              className="mt-4 text-base md:text-lg text-white flex items-center justify-center space-x-4 font-serif"
+              className="mt-4 text-sm md:text-lg text-white flex items-center justify-center md:justify-start space-x-4 font-serif"
             >
               <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.7 }}>Developer</motion.span>
               <motion.span initial={{ opacity: 0 }} animate={startAnimations ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.9 }} className="text-xs">&middot;</motion.span>
