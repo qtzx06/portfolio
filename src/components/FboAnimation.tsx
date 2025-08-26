@@ -1,4 +1,5 @@
 import { Canvas, useFrame, extend, createPortal } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
@@ -130,6 +131,7 @@ const FboAnimation = () => {
     >
       <ambientLight intensity={0.5} />
       <FBOParticles />
+      <OrbitControls enableZoom={false} enablePan={false} />
     </Canvas>
   );
 };
