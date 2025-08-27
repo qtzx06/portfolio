@@ -139,12 +139,12 @@ function App() {
 
         case 'ArrowUp':
           event.preventDefault();
-          handleArrowScroll(-40);
+          handleArrowScroll(-100);
           break;
 
         case 'ArrowDown':
           event.preventDefault();
-          handleArrowScroll(40);
+          handleArrowScroll(100);
           break;
       }
     };
