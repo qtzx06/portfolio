@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import type { Easing } from 'framer-motion';
+import { useRef } from 'react';
 
 interface Project {
   id: string;
@@ -18,6 +19,8 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-20% 0px -20% 0px" });
   const ease: Easing = 'easeOut';
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -31,8 +34,11 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 
   return (
     <motion.div 
+      ref={ref}
       className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row"
       variants={cardVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
     >
       <div 
         className="md:w-1/3 bg-gray-100 flex items-center justify-center p-4 cursor-pointer"
