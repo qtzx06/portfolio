@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, MotionValue, useMotionValueEvent, useTransform } from 'framer-motion';
+import { FaHandPointUp } from 'react-icons/fa';
 
 const navLinks = [
   { title: "Home", href: "#home" },
@@ -8,8 +9,15 @@ const navLinks = [
   { title: "Contact", href: "#contact" },
 ];
 
-const Header = ({ startAnimations }: { startAnimations: boolean }) => {
+const Header = ({ startAnimations, scrollYProgress, scale }: { startAnimations: boolean, scrollYProgress: MotionValue<number>, scale: MotionValue<number> }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hintClicked, setHintClicked] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+
+  // Listen to scroll progress to know if we're at the top
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setIsAtTop(latest === 0);
+  });
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -20,8 +28,13 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
     }
   };
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    setHintClicked(true); // Hide hint permanently after first interaction
+  };
   const closeMenu = () => setIsMenuOpen(false);
+
+  const showHint = !hintClicked && !isMenuOpen && isAtTop;
 
   return (
     <motion.header
@@ -29,16 +42,19 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
       initial={{ opacity: 0, y: -100 }}
       animate={startAnimations ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 1.0, ease: 'easeOut', delay: 0.2 }}
+      style={{ scale }}
     >
       {/* Desktop Menu */}
       <div className="hidden md:block">
-        <nav 
+        <motion.nav 
           className="relative flex items-center justify-center space-x-2 px-3 py-2 rounded-full"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 1)',
             boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.2), inset 0px 2px 1px rgba(255, 255, 255, 1), inset 0px -2px 1px rgba(0, 0, 0, 0.1)',
             border: '1px solid rgba(0, 0, 0, 0.05)'
           }}
+          whileHover={{ scale: 1.05, y: -5 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 15 }}
         >
           {navLinks.map((link) => (
             <motion.a 
@@ -46,17 +62,17 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
               href={link.href} 
               onClick={(e) => handleNavClick(e, link.href)}
               className="text-primary transition-colors duration-300 px-4 py-2 relative z-10 rounded-full text-sm"
-              whileHover={{ y: -2, boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)' }}
-              transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+              whileHover={{ color: '#9ca3af' }}
+              transition={{ duration: 0.2 }}
             >
               {link.title}
             </motion.a>
           ))}
-        </nav>
+        </motion.nav>
       </div>
 
       {/* Mobile Menu Button */}
-      <div className="md:hidden">
+      <div className="md:hidden relative flex flex-col items-center">
         <motion.button
           onClick={toggleMenu}
           className="relative w-16 h-16 rounded-full flex items-center justify-center"
@@ -73,6 +89,33 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
             </svg>
           </motion.div>
         </motion.button>
+        <AnimatePresence>
+          {showHint && (
+            <motion.div
+              className="absolute top-full mt-16 text-white font-serif text-center"
+              initial={{ opacity: 0 }}
+              animate={{ 
+                opacity: 0.7,
+                y: [0, -5, 0],
+              }}
+              exit={{ opacity: 0, transition: { duration: 0.1 } }}
+              transition={{
+                opacity: { delay: 2, duration: 0.5 },
+                y: {
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: 'yoyo',
+                  ease: 'easeInOut',
+                }
+              }}
+            >
+              <div className="relative" style={{ bottom: '11px' }}>
+                <FaHandPointUp className="mx-auto text-xl" />
+              </div>
+              <p className="whitespace-nowrap text-sm italic lowercase">*psst*, tap here!</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Mobile Pop-out Menu */}
@@ -83,26 +126,29 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="md:hidden absolute top-20 left-1/2 -translate-x-1/2 mt-2 w-48 rounded-2xl p-2"
+            className="md:hidden absolute top-20 left-1/2 -translate-x-1/2 mt-2 w-48 rounded-2xl p-3"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 1)',
-              boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.2)',
+              boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.2), inset 0px 2px 1px rgba(255, 255, 255, 1), inset 0px -2px 1px rgba(0, 0, 0, 0.1)',
               border: '1px solid rgba(0, 0, 0, 0.05)'
             }}
           >
-            <nav className="flex flex-col items-center">
+            <nav className="flex flex-col items-center space-y-2">
               {navLinks.map((link) => (
-                <a 
+                <motion.a 
                   key={link.title}
                   href={link.href} 
                   onClick={(e) => {
                     handleNavClick(e, link.href);
                     closeMenu();
                   }}
-                  className="text-primary hover:text-black transition-colors duration-300 w-full text-center py-3 rounded-lg"
+                  className="text-primary transition-colors duration-300 w-full text-center py-2 rounded-full text-sm"
+                  whileHover={{ color: '#9ca3af' }}
+                  whileTap={{ color: '#9ca3af' }}
+                  transition={{ duration: 0.2 }}
                 >
                   {link.title}
-                </a>
+                </motion.a>
               ))}
             </nav>
           </motion.div>
