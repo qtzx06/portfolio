@@ -102,28 +102,20 @@ function App() {
       switch (event.code) {
         case 'Space':
           event.preventDefault();
-          
-          // Nudge the scroll position slightly to ensure we're "in" the current section
-          scrollContainer.scrollBy({ top: 15 });
+          const currentScrollTop = scrollContainer.scrollTop;
+          const nextSectionIndex = sections.findIndex(section => {
+            const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
+            return section.offsetTop - scrollMarginTop > currentScrollTop + 1;
+          });
 
-          setTimeout(() => {
-            const currentScrollTop = scrollContainer.scrollTop;
-            // Find the index of the current section, accounting for scroll margin
-            const pastSections = sections.filter(section => {
-              const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
-              return section.offsetTop - scrollMarginTop <= currentScrollTop + 20;
+          if (nextSectionIndex !== -1) {
+            const nextSection = sections[nextSectionIndex];
+            const scrollMarginTop = parseFloat(getComputedStyle(nextSection).scrollMarginTop);
+            scrollContainer.scrollTo({
+              top: nextSection.offsetTop - scrollMarginTop,
+              behavior: 'smooth',
             });
-            const currentSectionIndex = sections.indexOf(pastSections[pastSections.length - 1]);
-            
-            if (currentSectionIndex < sections.length - 1) {
-              const nextSection = sections[currentSectionIndex + 1];
-              const scrollMarginTop = parseFloat(getComputedStyle(nextSection).scrollMarginTop);
-              scrollContainer.scrollTo({
-                top: nextSection.offsetTop - scrollMarginTop,
-                behavior: 'smooth',
-              });
-            }
-          }, 0);
+          }
           break;
 
         case 'ArrowUp':
