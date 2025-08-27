@@ -24,7 +24,7 @@ function App() {
   });
 
   // Animations for the text block
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
   const filter = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
@@ -62,15 +62,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
       const animationTimer = setTimeout(() => {
         setStartAnimations(true);
         const scrollTimer = setTimeout(() => {
           setIsScrollingEnabled(true);
-        }, 1400);
+        }, 4200);
         return () => clearTimeout(scrollTimer);
       }, 500);
       return () => clearTimeout(animationTimer);
@@ -78,7 +76,6 @@ function App() {
 
     return () => {
       clearTimeout(loadingTimer);
-      document.body.style.overflow = 'auto';
     };
   }, []);
 
