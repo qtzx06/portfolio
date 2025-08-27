@@ -41,14 +41,16 @@ const Header = ({ startAnimations }: { startAnimations: boolean }) => {
           }}
         >
           {navLinks.map((link) => (
-            <a 
+            <motion.a 
               key={link.title}
               href={link.href} 
               onClick={(e) => handleNavClick(e, link.href)}
               className="text-primary transition-colors duration-300 px-4 py-2 relative z-10 rounded-full text-sm"
+              whileHover={{ y: -2, boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 10 }}
             >
               {link.title}
-            </a>
+            </motion.a>
           ))}
         </nav>
       </div>
