@@ -90,8 +90,17 @@ function App() {
     }
   }, [isScrollingEnabled]);
 
+  const [isArrowScrolling, setIsArrowScrolling] = useState(false);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.style.scrollSnapType = isArrowScrolling ? 'none' : 'y proximity';
+    }
+  }, [isArrowScrolling]);
+
   // Keyboard navigation
   useEffect(() => {
+    let scrollTimeout: number;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!isScrollingEnabled || !scrollRef.current) return;
 
@@ -99,9 +108,19 @@ function App() {
       const sectionIds = ['home', 'about', 'portfolio', 'contact'];
       const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el) as HTMLElement[];
 
+      const handleArrowScroll = (top: number) => {
+        setIsArrowScrolling(true);
+        clearTimeout(scrollTimeout);
+        scrollContainer.scrollBy({ top, behavior: 'smooth' });
+        scrollTimeout = window.setTimeout(() => {
+          setIsArrowScrolling(false);
+        }, 500);
+      };
+
       switch (event.code) {
         case 'Space':
           event.preventDefault();
+          setIsArrowScrolling(false); // Ensure snapping is enabled for spacebar
           const currentScrollTop = scrollContainer.scrollTop;
           const nextSectionIndex = sections.findIndex(section => {
             const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
@@ -120,12 +139,12 @@ function App() {
 
         case 'ArrowUp':
           event.preventDefault();
-          scrollContainer.scrollBy({ top: -40 });
+          handleArrowScroll(-40);
           break;
 
         case 'ArrowDown':
           event.preventDefault();
-          scrollContainer.scrollBy({ top: 40 });
+          handleArrowScroll(40);
           break;
       }
     };
