@@ -143,7 +143,7 @@ const Header = ({ startAnimations, scrollYProgress, scale }: { startAnimations: 
               }}
               exit={{ opacity: 0, transition: { duration: 0.1 } }}
               transition={{
-                opacity: { delay: 5, duration: 0.5 },
+                opacity: { delay: 7, duration: 0.5 },
                 y: {
                   duration: 2,
                   repeat: Infinity,
