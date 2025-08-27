@@ -24,7 +24,7 @@ function App() {
   });
 
   // Animations for the text block
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.15]);
+  const scale = useTransform(scrollYProgress, [0, 0.85], [1, 0.1]);
   const filter = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
@@ -98,19 +98,32 @@ function App() {
       const scrollContainer = scrollRef.current;
       const sectionIds = ['home', 'about', 'portfolio', 'contact'];
       const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el) as HTMLElement[];
-      const currentScrollTop = scrollContainer.scrollTop;
 
       switch (event.code) {
         case 'Space':
           event.preventDefault();
-          // Find the index of the current or next section
-          const nextSectionIndex = sections.findIndex(section => section.offsetTop > currentScrollTop + 1);
-          if (nextSectionIndex !== -1) {
-            scrollContainer.scrollTo({
-              top: sections[nextSectionIndex].offsetTop,
-              behavior: 'smooth',
+          
+          // Nudge the scroll position slightly to ensure we're "in" the current section
+          scrollContainer.scrollBy({ top: 15 });
+
+          setTimeout(() => {
+            const currentScrollTop = scrollContainer.scrollTop;
+            // Find the index of the current section, accounting for scroll margin
+            const pastSections = sections.filter(section => {
+              const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
+              return section.offsetTop - scrollMarginTop <= currentScrollTop + 20;
             });
-          }
+            const currentSectionIndex = sections.indexOf(pastSections[pastSections.length - 1]);
+            
+            if (currentSectionIndex < sections.length - 1) {
+              const nextSection = sections[currentSectionIndex + 1];
+              const scrollMarginTop = parseFloat(getComputedStyle(nextSection).scrollMarginTop);
+              scrollContainer.scrollTo({
+                top: nextSection.offsetTop - scrollMarginTop,
+                behavior: 'smooth',
+              });
+            }
+          }, 0);
           break;
 
         case 'ArrowUp':
