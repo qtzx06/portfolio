@@ -50,6 +50,9 @@ function App() {
     }
   });
 
+  // Animations for the header
+  const headerScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.9]);
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -68,7 +71,7 @@ function App() {
         setStartAnimations(true);
         const scrollTimer = setTimeout(() => {
           setIsScrollingEnabled(true);
-        }, 4200);
+        }, 2400);
         return () => clearTimeout(scrollTimer);
       }, 500);
       return () => clearTimeout(animationTimer);
@@ -87,13 +90,54 @@ function App() {
     }
   }, [isScrollingEnabled]);
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isScrollingEnabled || !scrollRef.current) return;
+
+      const scrollContainer = scrollRef.current;
+      const sectionIds = ['home', 'about', 'portfolio', 'contact'];
+      const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el) as HTMLElement[];
+      const currentScrollTop = scrollContainer.scrollTop;
+
+      switch (event.code) {
+        case 'Space':
+          event.preventDefault();
+          // Find the index of the current or next section
+          const nextSectionIndex = sections.findIndex(section => section.offsetTop > currentScrollTop + 1);
+          if (nextSectionIndex !== -1) {
+            scrollContainer.scrollTo({
+              top: sections[nextSectionIndex].offsetTop,
+              behavior: 'smooth',
+            });
+          }
+          break;
+
+        case 'ArrowUp':
+          event.preventDefault();
+          scrollContainer.scrollBy({ top: -40, behavior: 'smooth' });
+          break;
+
+        case 'ArrowDown':
+          event.preventDefault();
+          scrollContainer.scrollBy({ top: 40, behavior: 'smooth' });
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isScrollingEnabled]);
+
   return (
     <div className="bg-white">
       <AnimatePresence>
         {isLoading && <Loading />}
       </AnimatePresence>
 
-      <Header startAnimations={startAnimations} />
+      <Header startAnimations={startAnimations} scrollYProgress={scrollYProgress} scale={headerScale} />
 
       <div className="scroll-container" ref={scrollRef}>
         <main
