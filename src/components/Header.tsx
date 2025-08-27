@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, MotionValue, useMotionValueEvent, useTransform } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence, MotionValue, useMotionValueEvent } from 'framer-motion';
 import { FaHandPointUp } from 'react-icons/fa';
 
 const navLinks = [
@@ -147,7 +147,7 @@ const Header = ({ startAnimations, scrollYProgress, scale }: { startAnimations: 
                 y: {
                   duration: 2,
                   repeat: Infinity,
-                  repeatType: 'yoyo',
+                  repeatType: 'mirror',
                   ease: 'easeInOut',
                 }
               }}

@@ -16,7 +16,7 @@ function App() {
   const [isScrollingEnabled, setIsScrollingEnabled] = useState(false);
 
   const heroRef = useRef(null);
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     container: scrollRef,
     target: heroRef,
@@ -24,7 +24,7 @@ function App() {
   });
 
   // Animations for the text block
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.15]);
   const filter = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
@@ -51,7 +51,7 @@ function App() {
   });
 
   // Animations for the header
-  const headerScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.9]);
+  const headerScale = useTransform(scrollYProgress, [0, 2], [1, 0.95]);
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
