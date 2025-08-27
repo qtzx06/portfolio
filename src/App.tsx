@@ -120,12 +120,12 @@ function App() {
 
         case 'ArrowUp':
           event.preventDefault();
-          scrollContainer.scrollBy({ top: -40, behavior: 'smooth' });
+          scrollContainer.scrollBy({ top: -40 });
           break;
 
         case 'ArrowDown':
           event.preventDefault();
-          scrollContainer.scrollBy({ top: 40, behavior: 'smooth' });
+          scrollContainer.scrollBy({ top: 40 });
           break;
       }
     };
