@@ -9,7 +9,7 @@
       @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Yeseva+One&display=swap');
       html {
         scroll-behavior: smooth;
-        scroll-snap-type: y mandatory;
+        scroll-snap-type: y proximity;
       }
       main, div[id] {
         scroll-snap-align: start;
@@ -26,6 +26,7 @@
       }
       /* Hide scrollbar for IE, Edge and Firefox */
       .scroll-container {
+        position: relative; /* Added for framer-motion */
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
       }

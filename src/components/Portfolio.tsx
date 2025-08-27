@@ -143,11 +143,13 @@ const Portfolio = () => {
     <div id="portfolio" ref={ref} className="relative min-h-screen w-screen bg-white py-24 px-8 md:px-[10vw]">
       <motion.div 
         className="max-w-7xl mx-auto"
-        variants={containerVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
       >
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          variants={containerVariants}
+        >
           <div className="h-12 md:h-16 mb-4">
             {startTyping ? (
               <TypeAnimation
@@ -180,7 +182,7 @@ const Portfolio = () => {
           >
             Download Resume
           </motion.a>
-        </div>
+        </motion.div>
         
         <div className="grid grid-cols-1 gap-12">
           {projects.map((project) => (

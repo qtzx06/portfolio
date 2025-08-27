@@ -49,7 +49,7 @@ const About = () => {
   };
 
   return (
-    <div id="about" ref={ref} className="relative min-h-screen w-screen bg-white py-24 px-8 md:px-[10vw]">
+    <div id="about" ref={ref} className="relative min-h-screen w-screen bg-white px-8 md:px-[10vw] flex items-center">
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full h-full items-start md:items-center"
         initial="hidden"
@@ -106,7 +106,7 @@ const About = () => {
           variants={mediaContainerVariants}
         >
             <div className="flex gap-4 w-full">
-                <motion.div variants={videoVariant} className="w-7/12 aspect-[9/16] rounded-lg overflow-hidden bg-gray-200">
+                <motion.div variants={videoVariant} className="w-7/12 aspect-[4/5] rounded-lg overflow-hidden bg-gray-200">
                     <video
                         src="/media/about/roomtour.mov"
                         autoPlay
@@ -117,13 +117,13 @@ const About = () => {
                     />
                 </motion.div>
                 <div className="w-5/12 flex flex-col gap-4">
-                    <motion.div variants={imageVariant} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                    <motion.div variants={imageVariant} className="aspect-[4/3] bg-gray-200 rounded-lg overflow-hidden">
                         <img src="/media/about/image1.png" alt="About 1" className="w-full h-full object-cover" />
                     </motion.div>
-                    <motion.div variants={imageVariant} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                    <motion.div variants={imageVariant} className="aspect-[4/3] bg-gray-200 rounded-lg overflow-hidden">
                         <img src="/media/about/image2.png" alt="About 2" className="w-full h-full object-cover" />
                     </motion.div>
-                    <motion.div variants={imageVariant} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                    <motion.div variants={imageVariant} className="aspect-[4/3] bg-gray-200 rounded-lg overflow-hidden">
                         <img src="/media/about/image3.png" alt="About 3" className="w-full h-full object-cover" />
                     </motion.div>
                 </div>
