@@ -18,8 +18,8 @@ const RotatingScene = ({ children }: { children: ReactNode }) => {
   useFrame((state) => {
     const { pointer } = state;
     // Rotate the group based on mouse position
-    const targetRotationX = pointer.y * 1.2;
-    const targetRotationY = -pointer.x * 1.2;
+    const targetRotationX = pointer.y * 2.4;
+    const targetRotationY = -pointer.x * 2.4;
     if (groupRef.current) {
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.05);
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.05);
