@@ -135,10 +135,13 @@ function App() {
           }
         });
 
-        if (closestSection) {
-          const scrollMarginTop = parseFloat(getComputedStyle(closestSection).scrollMarginTop);
+        // Only snap if the closest section is within a certain threshold (e.g., 30% of the viewport height)
+        const snapThreshold = containerHeight * 0.3;
+
+        if (closestSection && minDistance < snapThreshold) {
+          const scrollMarginTop = parseFloat(getComputedStyle(closestSection as HTMLElement).scrollMarginTop);
           scrollContainer.scrollTo({
-            top: closestSection.offsetTop - scrollMarginTop,
+            top: (closestSection as HTMLElement).offsetTop - scrollMarginTop,
             behavior: 'smooth',
           });
         }
