@@ -29,7 +29,7 @@ const Contact = () => {
   };
 
   return (
-    <div id="contact" ref={ref} className="relative min-h-screen w-screen bg-white flex items-center justify-center py-24 px-8 md:px-[10vw]">
+    <div id="contact" ref={ref} className="relative min-h-screen w-screen bg-white flex items-center justify-center py-24 px-8 md:px-[10vw] scroll-mt-24">
       <motion.div
         className="w-full max-w-4xl flex flex-col items-center justify-center text-center"
         initial="hidden"
@@ -42,14 +42,14 @@ const Contact = () => {
         <div className="h-12 md:h-16 mb-8">
           {startTyping ? (
             <TypeAnimation
-              sequence={['Connect...']}
+              sequence={['Get in Touch']}
               wrapper="h2"
               cursor={true}
               className="text-4xl md:text-5xl font-bold text-primary font-serif"
             />
           ) : (
             <h2 className="text-4xl md:text-5xl font-bold text-primary font-serif text-transparent">
-              Connect...
+              Get in Touch
             </h2>
           )}
         </div>

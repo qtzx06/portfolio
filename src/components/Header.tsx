@@ -23,8 +23,22 @@ const Header = ({ startAnimations, scrollYProgress, scale }: { startAnimations: 
     e.preventDefault();
     const targetId = href.substring(1);
     const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const scrollContainer = document.querySelector('.scroll-container');
+
+    if (targetElement && scrollContainer) {
+      const computedStyle = getComputedStyle(targetElement);
+      const scrollMargin = parseFloat(computedStyle.scrollMarginTop) || 0;
+      let targetPosition = (targetElement as HTMLElement).offsetTop;
+
+      // For the "Home" section, scroll to the very top.
+      if (targetId === 'home') {
+        targetPosition = 0;
+      }
+
+      scrollContainer.scrollTo({
+        top: targetPosition - scrollMargin,
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -131,7 +145,7 @@ const Header = ({ startAnimations, scrollYProgress, scale }: { startAnimations: 
       </motion.header>
 
       {/* Standalone Mobile Hint */}
-      <div className="fixed top-19 left-1/2 -translate-x-1/2 z-40 pointer-events-none w-[16rem] text-center">
+      <div className="fixed top-21 left-1/2 -translate-x-1/2 z-40 pointer-events-none w-[16rem] text-center md:hidden">
         <AnimatePresence>
           {showHint && (
             <motion.div
@@ -152,10 +166,10 @@ const Header = ({ startAnimations, scrollYProgress, scale }: { startAnimations: 
                 }
               }}
             >
-              <div className="relative" style={{ bottom: '11px' }}>
+              <div className="relative" style={{ bottom: '9px' }}>
                 <FaHandPointUp className="mx-auto text-x0.5" />
               </div>
-              <p className="whitespace-nowrap text-sm italic lowercase">*psst*, tap here!</p>
+              <p className="whitespace-nowrap text-sm italic lowercase"><i>psst</i>, tap here!</p>
             </motion.div>
           )}
         </AnimatePresence>

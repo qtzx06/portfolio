@@ -49,7 +49,7 @@ const About = () => {
   };
 
   return (
-    <div id="about" ref={ref} className="relative min-h-screen w-screen bg-white px-8 md:px-[10vw] flex items-center">
+    <div id="about" ref={ref} className="relative min-h-screen w-screen bg-white px-8 md:px-[10vw] flex items-center scroll-mt-24">
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full h-full items-start md:items-center"
         initial="hidden"
