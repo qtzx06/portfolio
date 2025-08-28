@@ -145,7 +145,7 @@ const Header = ({ startAnimations, scrollYProgress, scale }: { startAnimations: 
       </motion.header>
 
       {/* Standalone Mobile Hint */}
-      <div className="fixed top-21 left-1/2 -translate-x-1/2 z-40 pointer-events-none w-[16rem] text-center md:hidden">
+      <div className="fixed top-19.5 left-1/2 -translate-x-1/2 z-40 pointer-events-none w-[16rem] text-center md:hidden">
         <AnimatePresence>
           {showHint && (
             <motion.div
