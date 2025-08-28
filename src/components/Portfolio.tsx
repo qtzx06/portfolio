@@ -140,7 +140,7 @@ const Portfolio = () => {
   };
 
   return (
-    <div id="portfolio" ref={ref} className="relative min-h-screen w-screen bg-white py-24 px-8 md:px-[10vw]">
+    <div id="portfolio" ref={ref} className="relative min-h-screen w-screen bg-white pt-48 pb-24 md:py-24 px-8 md:px-[10vw] scroll-mt-0 md:scroll-mt-24">
       <motion.div 
         className="max-w-7xl mx-auto"
         initial="hidden"
@@ -153,14 +153,14 @@ const Portfolio = () => {
           <div className="h-12 md:h-16 mb-4">
             {startTyping ? (
               <TypeAnimation
-                sequence={['Portfolio...']}
+                sequence={['My Portfolio']}
                 wrapper="h2"
                 cursor={true}
                 className="text-4xl md:text-5xl font-bold text-primary font-serif"
               />
             ) : (
               <h2 className="text-4xl md:text-5xl font-bold text-primary font-serif text-transparent">
-                Portfolio...
+                My Portfolio
               </h2>
             )}
           </div>

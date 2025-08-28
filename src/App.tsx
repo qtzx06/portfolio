@@ -90,68 +90,114 @@ function App() {
     }
   }, [isScrollingEnabled]);
 
-  const [isArrowScrolling, setIsArrowScrolling] = useState(false);
-
+  // Keyboard navigation & JS-based Smooth Snap
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.style.scrollSnapType = isArrowScrolling ? 'none' : 'y proximity';
-    }
-  }, [isArrowScrolling]);
+    if (!isScrollingEnabled || !scrollRef.current) return;
 
-  // Keyboard navigation
-  useEffect(() => {
-    let scrollTimeout: number;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!isScrollingEnabled || !scrollRef.current) return;
+    const scrollContainer = scrollRef.current;
+    const scrollDirection = { current: 0 }; // For arrow keys
+    let animationFrameId: number | null = null;
+    let scrollTimeout: number | null = null;
 
-      const scrollContainer = scrollRef.current;
-      const sectionIds = ['home', 'about', 'portfolio', 'contact'];
-      const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el) as HTMLElement[];
-
-      const handleArrowScroll = (top: number) => {
-        setIsArrowScrolling(true);
-        clearTimeout(scrollTimeout);
-        scrollContainer.scrollBy({ top, behavior: 'smooth' });
-        scrollTimeout = window.setTimeout(() => {
-          setIsArrowScrolling(false);
-        }, 500);
-      };
-
-      switch (event.code) {
-        case 'Space':
-          event.preventDefault();
-          setIsArrowScrolling(false); // Ensure snapping is enabled for spacebar
-          const currentScrollTop = scrollContainer.scrollTop;
-          const nextSectionIndex = sections.findIndex(section => {
-            const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
-            return section.offsetTop - scrollMarginTop > currentScrollTop + 1;
-          });
-
-          if (nextSectionIndex !== -1) {
-            const nextSection = sections[nextSectionIndex];
-            const scrollMarginTop = parseFloat(getComputedStyle(nextSection).scrollMarginTop);
-            scrollContainer.scrollTo({
-              top: nextSection.offsetTop - scrollMarginTop,
-              behavior: 'smooth',
-            });
-          }
-          break;
-
-        case 'ArrowUp':
-          event.preventDefault();
-          handleArrowScroll(-100);
-          break;
-
-        case 'ArrowDown':
-          event.preventDefault();
-          handleArrowScroll(100);
-          break;
+    // Smooth scrolling loop for arrow keys
+    const smoothScroll = () => {
+      if (scrollDirection.current !== 0) {
+        scrollContainer.scrollTop += 10 * scrollDirection.current;
+        animationFrameId = requestAnimationFrame(smoothScroll);
       }
     };
 
+    // Debounced snap-to-section logic
+    const handleScroll = () => {
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+
+      // Don't snap while actively scrolling with arrow keys
+      if (scrollDirection.current !== 0) return;
+
+      scrollTimeout = window.setTimeout(() => {
+        const sectionIds = ['home', 'about', 'portfolio', 'contact'];
+        const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el) as HTMLElement[];
+        const currentScrollTop = scrollContainer.scrollTop;
+        const containerHeight = scrollContainer.clientHeight;
+
+        // Find the section whose top is closest to the center of the viewport
+        let closestSection: HTMLElement | null = null;
+        let minDistance = Infinity;
+
+        sections.forEach(section => {
+          const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
+          const sectionTop = section.offsetTop - scrollMarginTop;
+          const distance = Math.abs(currentScrollTop - sectionTop);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestSection = section;
+          }
+        });
+
+        if (closestSection) {
+          const scrollMarginTop = parseFloat(getComputedStyle(closestSection).scrollMarginTop);
+          scrollContainer.scrollTo({
+            top: closestSection.offsetTop - scrollMarginTop,
+            behavior: 'smooth',
+          });
+        }
+      }, 150); // Debounce delay in ms
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+        event.preventDefault();
+        const newDirection = event.code === 'ArrowUp' ? -1 : 1;
+        if (scrollDirection.current === 0) {
+          scrollDirection.current = newDirection;
+          if (animationFrameId) cancelAnimationFrame(animationFrameId);
+          animationFrameId = requestAnimationFrame(smoothScroll);
+        }
+      } else if (event.code === 'Space') {
+        event.preventDefault();
+        const sectionIds = ['home', 'about', 'portfolio', 'contact'];
+        const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el) as HTMLElement[];
+        const currentScrollTop = scrollContainer.scrollTop;
+        const nextSectionIndex = sections.findIndex(section => {
+          const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
+          return section.offsetTop - scrollMarginTop > currentScrollTop + 1;
+        });
+
+        if (nextSectionIndex !== -1) {
+          const nextSection = sections[nextSectionIndex];
+          const scrollMarginTop = parseFloat(getComputedStyle(nextSection).scrollMarginTop);
+          scrollContainer.scrollTo({
+            top: nextSection.offsetTop - scrollMarginTop,
+            behavior: 'smooth',
+          });
+        }
+      }
+    };
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+        event.preventDefault();
+        scrollDirection.current = 0;
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+        // Trigger the snap check after stopping
+        handleScroll();
+      }
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
     return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
     };
   }, [isScrollingEnabled]);
 
