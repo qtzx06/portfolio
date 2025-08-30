@@ -101,7 +101,7 @@ function App() {
     // Smooth scrolling loop for arrow keys
     const smoothScroll = () => {
       if (scrollDirection.current !== 0) {
-        scrollContainer.scrollTop += 10 * scrollDirection.current;
+        scrollContainer.scrollTop += 15 * scrollDirection.current;
         animationFrameId = requestAnimationFrame(smoothScroll);
       }
     };
@@ -130,6 +130,12 @@ function App() {
           const scrollMarginTop = parseFloat(getComputedStyle(nextSection).scrollMarginTop);
           scrollContainer.scrollTo({
             top: nextSection.offsetTop - scrollMarginTop,
+            behavior: 'smooth',
+          });
+        } else {
+          // If at the last section, loop back to the top
+          scrollContainer.scrollTo({
+            top: 0,
             behavior: 'smooth',
           });
         }
