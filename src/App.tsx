@@ -90,14 +90,13 @@ function App() {
     }
   }, [isScrollingEnabled]);
 
-  // Keyboard navigation & JS-based Smooth Snap
+  // Keyboard navigation
   useEffect(() => {
     if (!isScrollingEnabled || !scrollRef.current) return;
 
     const scrollContainer = scrollRef.current;
     const scrollDirection = { current: 0 }; // For arrow keys
     let animationFrameId: number | null = null;
-    let scrollTimeout: number | null = null;
 
     // Smooth scrolling loop for arrow keys
     const smoothScroll = () => {
@@ -105,47 +104,6 @@ function App() {
         scrollContainer.scrollTop += 10 * scrollDirection.current;
         animationFrameId = requestAnimationFrame(smoothScroll);
       }
-    };
-
-    // Debounced snap-to-section logic
-    const handleScroll = () => {
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-
-      // Don't snap while actively scrolling with arrow keys
-      if (scrollDirection.current !== 0) return;
-
-      scrollTimeout = window.setTimeout(() => {
-        const sectionIds = ['home', 'about', 'portfolio', 'contact'];
-        const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el) as HTMLElement[];
-        const currentScrollTop = scrollContainer.scrollTop;
-        const containerHeight = scrollContainer.clientHeight;
-
-        // Find the section whose top is closest to the center of the viewport
-        let closestSection: HTMLElement | null = null;
-        let minDistance = Infinity;
-
-        sections.forEach(section => {
-          const scrollMarginTop = parseFloat(getComputedStyle(section).scrollMarginTop);
-          const sectionTop = section.offsetTop - scrollMarginTop;
-          const distance = Math.abs(currentScrollTop - sectionTop);
-
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestSection = section;
-          }
-        });
-
-        // Only snap if the closest section is within a certain threshold (e.g., 30% of the viewport height)
-        const snapThreshold = containerHeight * 0.3;
-
-        if (closestSection && minDistance < snapThreshold) {
-          const scrollMarginTop = parseFloat(getComputedStyle(closestSection as HTMLElement).scrollMarginTop);
-          scrollContainer.scrollTo({
-            top: (closestSection as HTMLElement).offsetTop - scrollMarginTop,
-            behavior: 'smooth',
-          });
-        }
-      }, 150); // Debounce delay in ms
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -186,21 +144,16 @@ function App() {
           cancelAnimationFrame(animationFrameId);
           animationFrameId = null;
         }
-        // Trigger the snap check after stopping
-        handleScroll();
       }
     };
 
-    scrollContainer.addEventListener('scroll', handleScroll);
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
     return () => {
-      scrollContainer.removeEventListener('scroll', handleScroll);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      if (scrollTimeout) clearTimeout(scrollTimeout);
     };
   }, [isScrollingEnabled]);
 
