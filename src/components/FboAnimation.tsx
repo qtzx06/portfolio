@@ -55,7 +55,7 @@ const FBOParticles = () => {
     const length = size * size;
     const particles = new Float32Array(length * 3);
     for (let i = 0; i < length; i++) {
-      let i3 = i * 3;
+      const i3 = i * 3;
       particles[i3 + 0] = (i % size) / size;
       particles[i3 + 1] = i / size / size;
     }
@@ -93,7 +93,7 @@ const FBOParticles = () => {
     <>
       {createPortal(
         <mesh>
-          {/* @ts-ignore */}
+          {/* @ts-expect-error R3F's extend function does not have strong typing */}
           <simulationMaterial ref={simulationMaterialRef} args={[size]} />
           <bufferGeometry>
             <bufferAttribute
