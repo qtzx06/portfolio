@@ -168,7 +168,7 @@ const Portfolio = () => {
             A collection of my favorite projects, from <strong>hackathon-winning AI agents</strong> to finely-tuned <strong>custom development environments</strong>. These are the projects that kept me up at night—debugging edge cases at 2 am, refactoring for the third time because I found a more elegant approach, and constantly thinking "<strong>what if I tried...</strong>"
           </motion.p>
           <motion.a 
-            href="/media/resume/JoshuaLinResumeMain.pdf"
+            href="/media/resume/JoshuaLinResume.pdf"
             download="JoshuaLinResume.pdf"
             variants={itemVariants}
             className="inline-block text-primary font-semibold px-6 py-3 rounded-full text-sm"
