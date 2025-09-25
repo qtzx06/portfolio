@@ -18,7 +18,6 @@ const projects = [
     techStack: ['Next.js', 'FastAPI', 'Python', 'LangChain', 'Manim', 'Gemini', 'WebSockets'],
     githubLink: 'https://github.com/qtzx06/clarifai',
     liveLink: 'https://www.linkedin.com/feed/update/urn:li:activity:7365627336987250688/',
-    media: '/media/projects/hd/clarifai.mp4',
     gif: '/media/projects/gif/clarifai.gif',
   },
   {
@@ -34,7 +33,6 @@ const projects = [
     techStack: ['Python', 'FastAPI', 'OpenCV', 'PyTorch', 'YOLOv8', 'MediaPipe'],
     githubLink: 'https://github.com/qtzx06/nntimer',
     liveLink: 'https://www.linkedin.com/feed/update/urn:li:activity:7362925005870915584/',
-    media: '/media/projects/hd/nntimer.mp4',
     gif: '/media/projects/gif/nntimer.gif',
   },
   {
@@ -50,7 +48,6 @@ const projects = [
     techStack: ['Vite', 'React', 'Tailwind CSS', 'Notion CMS'],
     githubLink: 'https://github.com/qtzx06/cassandra-college-coaching',
     liveLink: 'https://cassandra-college-coaching.qtzx.dev/',
-    media: '/media/projects/hd/cassandra.mp4',
     gif: '/media/projects/gif/cassandra.gif',
   },
   {
@@ -65,24 +62,37 @@ const projects = [
     ],
     techStack: ['Rust', 'React/Next.js', 'Three.js', 'ratatui', 'crossterm'],
     githubLink: 'https://github.com/qtzx06/pomosync',
-    media: '/media/projects/hd/pomosync.mp4',
     gif: '/media/projects/gif/pomosync.gif',
   },
   {
-    id: 'portfolio',
-    title: 'Personal Portfolio Website',
-    subtitle: 'This website showcasing projects and experience',
+    id: 'mixplusmatcha',
+    title: 'Mix+Matcha E-Commerce Platform',
+    subtitle: 'Full-stack e-commerce solution',
     description: [
-      'built with modern web tech including <strong>Three.js</strong> for visualizations,',
-      '<strong>responsive design</strong> optimized for all screen sizes,',
-      'features a clean layout balancing <strong>technical depth</strong> and <strong>visual appeal</strong>,',
-      'optimized for performance with <strong>fast loading</strong> and <strong>smooth animations</strong>.',
+        'developing an <strong>e-commerce</strong> platform for @mixplusmatcha,',
+        'built with <strong>Next.js</strong> for a modern, server-rendered frontend,',
+        'integrating the <strong>Stripe API</strong> for secure payment processing,',
+        'designed for managing <strong>postings and orders</strong> efficiently.',
     ],
-    techStack: ['React', 'Vite', 'Three.js', 'Framer Motion', 'Tailwind CSS'],
-    githubLink: '',
-    liveLink: 'https://qtzx.dev/',
-    media: '/media/projects/hd/portfolio.mp4',
-    gif: '/media/projects/gif/portfolio.gif',
+    techStack: ['Next.js', 'Stripe API', 'React', 'Node.js'],
+    githubLink: '', // No link provided in resume
+    liveLink: '', // No link provided
+    gif: '/media/projects/gif/concept.gif', // Placeholder
+  },
+  {
+    id: 'uweb',
+    title: 'UWE Website Redesign',
+    subtitle: 'Redesign for UC Berkeley organization',
+    description: [
+        'developing a website redesign for <strong>UC Berkeley\'s</strong> UWE,',
+        'utilizing <strong>React</strong> for a dynamic and responsive user interface,',
+        'focusing on a clean, modern aesthetic to improve user engagement,',
+        'collaborating with stakeholders to meet organizational needs.',
+    ],
+    techStack: ['React', 'JavaScript', 'HTML/CSS'],
+    githubLink: '', // No link provided
+    liveLink: '', // No link provided
+    gif: '/media/projects/gif/dotfiles.gif', // Placeholder
   },
   {
     id: 'llm-research',
@@ -96,7 +106,6 @@ const projects = [
     ],
     techStack: ['Python', 'PyTorch', 'ROCm', 'CUDA', 'Runpod', 'LLM'],
     githubLink: 'https://github.com/qtzx06/concept-aware-llms',
-    media: '/media/projects/hd/concept.mov',
     gif: '/media/projects/gif/concept.gif',
   },
   {
@@ -111,10 +120,10 @@ const projects = [
     ],
     techStack: ['Arch Linux', 'Hyprland', 'Shell Scripting', 'Git'],
     githubLink: 'https://github.com/qtzx06/dotfiles',
-    media: '/media/projects/hd/dotfiles.mov',
     gif: '/media/projects/gif/dotfiles.gif',
   },
 ];
+
 
 const Portfolio = () => {
   const ref = useRef(null);

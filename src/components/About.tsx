@@ -107,12 +107,9 @@ const About = () => {
         >
             <div className="flex gap-4 w-full">
                 <motion.div variants={videoVariant} className="w-7/12 aspect-[4/5] rounded-lg overflow-hidden bg-gray-200">
-                    <video
-                        src="/media/about/roomtour.mov"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
+                    <img
+                        src="/media/about/roomtour.gif"
+                        alt="Room Tour"
                         className="w-full h-full object-cover"
                     />
                 </motion.div>
