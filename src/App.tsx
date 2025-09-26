@@ -101,7 +101,7 @@ function App() {
     // Smooth scrolling loop for arrow keys
     const smoothScroll = () => {
       if (scrollDirection.current !== 0) {
-        scrollContainer.scrollTop += 15 * scrollDirection.current;
+        scrollContainer.scrollTop += 8 * scrollDirection.current;
         animationFrameId = requestAnimationFrame(smoothScroll);
       }
     };
