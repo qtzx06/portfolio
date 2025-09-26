@@ -25,3 +25,4 @@ dist-ssr
 
 # Ignore HD videos
 public/media/projects/hd/
+public/media/about/roomtour.mov
