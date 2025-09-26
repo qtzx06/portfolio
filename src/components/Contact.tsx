@@ -54,7 +54,7 @@ const Contact = () => {
           )}
         </div>
         <p className="text-tertiary text-lg mb-12 max-w-2xl">
-          I love connecting with fellow builders, researchers, and <strong>curious minds</strong>. Whether you want to brainstorm a project or just geek out about tech, I'm always up for a good conversation. Coffee chats, late-night coding sessions, or quick DMs, <strong>whatever works for you</strong>.
+          I love connecting with fellow builders, researchers, and <strong>curious minds</strong>!
         </p>
         <motion.div 
           className="flex items-center justify-center flex-wrap gap-x-8 gap-y-6"

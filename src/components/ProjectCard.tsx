@@ -10,7 +10,6 @@ interface Project {
   techStack: string[];
   githubLink: string;
   liveLink?: string;
-  media: string;
   gif: string;
 }
 
@@ -27,10 +26,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
   };
 
-  const openVideo = () => {
-    const videoUrl = `/video-viewer.html?src=${encodeURIComponent(project.media)}`;
-    window.open(videoUrl, '_blank');
-  };
+  
 
   return (
     <motion.div 
@@ -41,8 +37,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       animate={inView ? "visible" : "hidden"}
     >
       <div 
-        className="md:w-1/3 bg-gray-100 flex items-center justify-center p-4 cursor-pointer"
-        onClick={openVideo}
+        className="md:w-1/3 bg-gray-100 flex items-center justify-center p-4"
       >
         <img src={project.gif} alt={`${project.title} GIF preview`} className="w-full h-full object-cover rounded-md" />
       </div>
